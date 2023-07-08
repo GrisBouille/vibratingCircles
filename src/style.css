@@ -1,3 +1,15 @@
+/********************
+    @Import Google-Fonts
+********************/
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu|Barrio|Bubbler+One|Cinzel|Dancing+Script|El+Messiri|Lobster|Montserrat+Subrayada|Montserrat:900|Pacifico');
+
+body {
+  color: white;
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 12px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,6 +17,7 @@
 }
 
 #canvas {
+  background-color: rgba(242, 231, 191, 0.7);
   border: 10px solid black;
   position: absolute;
   top: 50%;
@@ -13,6 +26,7 @@
 }
 
 #controlPanel {
+  border-left: 2px solid black;
   position: fixed;
   padding-left: 30px;
   padding-right: 15px;
@@ -21,8 +35,12 @@
   right: -223px; /* Start off the screen. Adjust width as needed. */
   width: 250px;  /* Adjust width as needed. */
   height: 100vh;
-  background-color: rgba(159, 156, 156, 0.7);
+  background-color: rgba(242, 231, 191, 0.7);
   transition: right 0.5s;  /* Adjust transition speed as needed. */
+}
+
+.slider-container {
+  margin-top: 5px;
 }
 
 .slider {

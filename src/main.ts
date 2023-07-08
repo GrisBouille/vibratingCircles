@@ -15,6 +15,7 @@ let circleNumberElement: HTMLInputElement | null = document.getElementById(
 
 circleNumberElement.addEventListener("input", function () {
   circleNumber = parseFloat(this.value); // Log the current value of the slider.
+  this.previousElementSibling.previousElementSibling.innerHTML = this.value;
   resetDrawing();
   // You can use this value to adjust aspects of your animation.
 });
@@ -162,7 +163,7 @@ class ShakingCircle {
   draw() {
     //context.strokeStyle = 'hsl(' + this.hue + ', 50%, 50%)';
     context.strokeStyle = this.greyScale;
-
+    context.fillStyle = 'rgba(255, 255, 255, 0';
     context.beginPath();
     this.circles[Math.floor(Math.random() * this.circles.length)].draw(
       this.lineWidth
@@ -171,11 +172,11 @@ class ShakingCircle {
     this.circles[Math.floor(Math.random() * this.circles.length)].draw(
       this.lineWidth
     );
-    //context.fillStyle = this.rgba;
+    context.fillStyle = this.rgba;
     this.circles[Math.floor(Math.random() * this.circles.length)].draw(
       this.lineWidth
     );
-    //context.fill();
+    context.fill();
 
     // for(let circle of this.circles) {
     //   context.translate(circle.center.x, circle.center.y);
@@ -217,28 +218,3 @@ function animate(timestamp) {
   requestAnimationFrame(animate);
 }
 animate();
-
-// let slider;
-
-// function setup() {
-//   createCanvas(400, 400);
-//   background(0);
-//   slider = createSlider(0, 10, 5, 0.1);
-// }
-// function draw() {
-//   addCircle(random(50, width - 50), random(50, height - 50));
-// }
-
-// function addCircle(cx, cy) {
-//   translate(cx, cy);
-//   stroke(255);
-//   noFill();
-//   beginShape();
-//   for (let a = 0; a < TWO_PI; a+=0.3) {
-//     let r = random(80,110);
-//     let x = r * cos(a);
-//     let y = r * sin(a);
-//     vertex(x,y);
-//   }
-//   endShape(CLOSE);
-// }
