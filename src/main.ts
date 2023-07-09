@@ -9,16 +9,16 @@ let circleNumber: { value: number} = { value: 23};
 let stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
-document.getElementById("stats").appendChild(stats.dom);
+document!.getElementById("stats")!.appendChild(stats.dom);
 let lastUpdate: number = 0; // Timestamp of the last update
 let delay: number = 100; // Delay between updates in milliseconds
 
 settingsPanel.addSetting("Circles:", circleNumber, resetDrawing);
 
 let drawing: ShakingCircle[] = [];
-let canvas: HTMLCanvasElement | null = document.getElementById(
-  "canvas"
-) as HTMLCanvasElement;
+let canvas: HTMLCanvasElement = document.createElement('canvas');
+canvas.id = 'canvas';
+document.body.prepend(canvas);
 let context: CanvasRenderingContext2D = canvas.getContext("2d")!;
 
 // Set canvas size
@@ -62,7 +62,7 @@ class Circle {
 }
 
 class ShakingCircle {
-  private canvas: HTMLCanvasElement;
+  protected canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private shakyness: number;
   private cx: number;
@@ -77,8 +77,8 @@ class ShakingCircle {
     this.canvas = canvas;
     this.context = context;
     this.shakyness = Math.random() * 25 + 10;
-    this.cx = Math.floor(Math.random() * canvas.width);
-    this.cy = Math.floor(Math.random() * canvas.height);
+    this.cx = Math.floor(Math.random() * this.canvas.width);
+    this.cy = Math.floor(Math.random() * this.canvas.height);
     this.hue = Math.floor(Math.random() * 360);
     this.rgba =
       "rgba(" +
@@ -121,9 +121,9 @@ class ShakingCircle {
   // Additional methods for the class...
   draw() {
     //context.strokeStyle = 'hsl(' + this.hue + ', 50%, 50%)';
-    context.strokeStyle = this.greyScale;
-    context.fillStyle = "rgba(255, 255, 255, 0";
-    context.beginPath();
+    this.context.strokeStyle = this.greyScale;
+    this.context.fillStyle = "rgba(255, 255, 255, 0";
+    this.context.beginPath();
     this.circles[Math.floor(Math.random() * this.circles.length)].draw(
       this.lineWidth
     );
@@ -135,9 +135,9 @@ class ShakingCircle {
     this.circles[Math.floor(Math.random() * this.circles.length)].draw(
       this.lineWidth
     );
-    context.fill();
-    context.closePath();
-    context.stroke();
+    this.context.fill();
+    this.context.closePath();
+    this.context.stroke();
   }
 
   update() {}
