@@ -1,5 +1,10 @@
 import "./style.css";
 import Stats from "stats.js";
+import SettingsPanel from "./settingsPanel";
+
+let settingsPanel: SettingsPanel = new SettingsPanel();
+
+let circleNumber: { value: number} = { value: 23};
 
 let stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -8,52 +13,7 @@ document.getElementById("stats").appendChild(stats.dom);
 let lastUpdate: number = 0; // Timestamp of the last update
 let delay: number = 100; // Delay between updates in milliseconds
 
-
-let circleNumberElement: HTMLInputElement | null = document.getElementById(
-  "circleNumber"
-) as HTMLInputElement;
-
-circleNumberElement.addEventListener("input", function () {
-  circleNumber = parseFloat(this.value); // Log the current value of the slider.
-  this.previousElementSibling.previousElementSibling.innerHTML = this.value;
-  resetDrawing();
-  // You can use this value to adjust aspects of your animation.
-});
-
-let circleNumber: number = parseFloat(circleNumberElement.value);
-let controlPanel: HTMLElement | null = document.getElementById(
-  "controlPanel"
-) as HTMLElement;
-
-// This flag will track whether the mouse is over the panel.
-let isMouseOverPanel = false;
-
-let isAnimating = true;
-controlPanel.addEventListener("mouseenter", () => {
-  console.log("entered");
-  isMouseOverPanel = true;
-  isAnimating = true;
-});
-
-controlPanel.addEventListener("mouseleave", () => {
-  isMouseOverPanel = false;
-  isAnimating = true;
-  // Slide the control panel out when the mouse leaves the panel.
-  controlPanel.style.right = "-250px";
-});
-
-document.addEventListener("mousemove", (event) => {
-  let x = event.clientX;
-  let windowWidth = window.innerWidth;
-  console.log(windowWidth - x);
-
-  // If the mouse is within 7 pixels of the right edge...
-  if (windowWidth - x <= 27 || isMouseOverPanel) {
-    controlPanel.style.right = "0"; // Slide the control panel in.
-  } else {
-    controlPanel.style.right = "-223px"; // Slide the control panel out.
-  }
-});
+settingsPanel.addSetting("Circles:", circleNumber, resetDrawing);
 
 let drawing: ShakingCircle[] = [];
 let canvas: HTMLCanvasElement | null = document.getElementById(
@@ -61,7 +21,6 @@ let canvas: HTMLCanvasElement | null = document.getElementById(
 ) as HTMLCanvasElement;
 let context: CanvasRenderingContext2D = canvas.getContext("2d")!;
 
-//let circleNumber: number = 53; // max 2500
 // Set canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -91,7 +50,7 @@ class Circle {
 
   draw(lineWidth: number) {
     context.lineWidth = lineWidth;
-    //if (lineWidth < .5) context.strokeStyle = 'black';
+    //if (lineWidth < .7) context.strokeStyle = 'white';
     context.translate(this.center.x, this.center.y);
     for (let point of this.points) {
       context.lineTo(point.x, point.y);
@@ -131,7 +90,7 @@ class ShakingCircle {
       ", " +
       this.getRandomOpacity() +
       ")";
-    this.greyScale = "rgba(0, 0, 0, " + this.getRandomOpacity() + ")";
+    this.greyScale = "rgba(255, 255, 255, " + this.getRandomOpacity() + ")";
     this.circles = [];
     this.lineWidth = Math.random() * 1 + 0.5;
     this.generateCircles();
@@ -163,7 +122,7 @@ class ShakingCircle {
   draw() {
     //context.strokeStyle = 'hsl(' + this.hue + ', 50%, 50%)';
     context.strokeStyle = this.greyScale;
-    context.fillStyle = 'rgba(255, 255, 255, 0';
+    context.fillStyle = "rgba(255, 255, 255, 0";
     context.beginPath();
     this.circles[Math.floor(Math.random() * this.circles.length)].draw(
       this.lineWidth
@@ -177,15 +136,6 @@ class ShakingCircle {
       this.lineWidth
     );
     context.fill();
-
-    // for(let circle of this.circles) {
-    //   context.translate(circle.center.x, circle.center.y);
-    //   for(let point of circle.points) {
-    //     context.lineTo(point.x, point.y);
-    //   }
-    //   context.resetTransform();
-    // }
-
     context.closePath();
     context.stroke();
   }
@@ -195,14 +145,14 @@ class ShakingCircle {
 
 function resetDrawing() {
   drawing = [];
-  for (let i = 0; i < circleNumber; i++) {
+  for (let i = 0; i < circleNumber.value; i++) {
     drawing.push(new ShakingCircle(canvas, context));
   }
 }
 resetDrawing();
 function animate(timestamp) {
   stats.begin();
-  if (timestamp - lastUpdate >= delay && isAnimating) {
+  if (timestamp - lastUpdate >= delay) {
     // If the delay has passed
     lastUpdate = timestamp; // Update the last update timestamp
 
