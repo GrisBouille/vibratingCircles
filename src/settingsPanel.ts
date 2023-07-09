@@ -38,12 +38,12 @@ class SettingsPanel extends HTMLElement {
   }
 
   // Add methods for your class here
-  addSetting(labelText: string, linkedValue: {value:any}, callback: any) {
+  addSetting(labelText: string, inputElement: HTMLInputElement, linkedValue: {value:any}, callback: any) {
     let sliderContainer = document.createElement('div');
     sliderContainer.className = "slider-container";
 
     let label = document.createElement('label');
-    label.htmlFor = "circleNumber";
+    label.htmlFor = inputElement.id;
     label.textContent = labelText;
 
     let span1 = document.createElement('span');
@@ -51,20 +51,18 @@ class SettingsPanel extends HTMLElement {
 
     let spanValue = document.createElement('span');
     spanValue.className = "slider-value";
-    spanValue.textContent = linkedValue.value;
+    spanValue.textContent = inputElement.value;
 
     let span2 = document.createElement('span');
     span2.textContent = ")";
 
-    let input = document.createElement('input');
-    input.type = "range";
-    input.min = "1";
-    input.max = "2000";
-    input.value = linkedValue.value;
-    input.className = "slider";
-    input.id = "circleNumber";
+    let input = inputElement;
     input.addEventListener("input", function () {
+      if(typeof linkedValue.value === "number") {
         linkedValue.value = parseFloat(this.value); // Log the current value of the slider.
+      } else {
+        linkedValue.value = this.value; // Log the current value of the slider.
+      }
         spanValue.textContent = this.value;
         callback();
         // You can use this value to adjust aspects of your animation.

@@ -4,20 +4,46 @@ import SettingsPanel from "./settingsPanel";
 
 let settingsPanel: SettingsPanel = new SettingsPanel();
 
-let circleNumber: { value: number} = { value: 23};
+let circleNumber: { value: number } = { value: 23 };
+let circleAverageRadius: { value: number } = { value: 100 };
+let borderColor: { value: string } = { value: "#550000" };
 
 let stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
 document!.getElementById("stats")!.appendChild(stats.dom);
+
 let lastUpdate: number = 0; // Timestamp of the last update
 let delay: number = 100; // Delay between updates in milliseconds
 
-settingsPanel.addSetting("Circles:", circleNumber, resetDrawing);
+let input = document.createElement("input");
+input.type = "range";
+input.min = "1";
+input.max = "2000";
+input.value = circleNumber.value.toString();
+input.className = "slider";
+input.id = "circleNumber";
+settingsPanel.addSetting("Circles:", input, circleNumber, resetDrawing);
+
+let radiusInput = document.createElement("input");
+radiusInput.type = "range";
+radiusInput.min = "15";
+radiusInput.max = "200";
+radiusInput.value = circleAverageRadius.value.toString();
+radiusInput.className = "slider";
+radiusInput.id = "circleRadius";
+settingsPanel.addSetting("Circles Radius:", radiusInput, circleAverageRadius, resetDrawing);
+
+let borderColorInput = document.createElement("input");
+borderColorInput.type = "color";
+borderColorInput.className = "borderColor";
+borderColorInput.value = borderColor.value.toString();
+settingsPanel.addSetting("Border color:", borderColorInput, borderColor, resetDrawing);
+
 
 let drawing: ShakingCircle[] = [];
-let canvas: HTMLCanvasElement = document.createElement('canvas');
-canvas.id = 'canvas';
+let canvas: HTMLCanvasElement = document.createElement("canvas");
+canvas.id = "canvas";
 document.body.prepend(canvas);
 let context: CanvasRenderingContext2D = canvas.getContext("2d")!;
 
@@ -28,7 +54,7 @@ canvas.height = window.innerHeight;
 // Now you can use the context to draw on the canvas
 
 context.lineWidth = 0.6;
-context.strokeStyle = "black";
+//context.strokeStyle = "black";
 
 type Point = {
   x: number;
@@ -71,7 +97,6 @@ class ShakingCircle {
   private circles: Circle[];
   private lineWidth: number;
   private rgba: string;
-  private greyScale: string;
 
   constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     this.canvas = canvas;
@@ -90,7 +115,6 @@ class ShakingCircle {
       ", " +
       this.getRandomOpacity() +
       ")";
-    this.greyScale = "rgba(255, 255, 255, " + this.getRandomOpacity() + ")";
     this.circles = [];
     this.lineWidth = Math.random() * 1 + 0.5;
     this.generateCircles();
@@ -105,13 +129,11 @@ class ShakingCircle {
   }
 
   generateCircles() {
-    let baseRadius = Math.random() * 200 + 10;
     for (let i = 0; i < 5; i++) {
       let circle = new Circle(this.cx, this.cy);
 
       for (let a = 0; a < Math.PI * 2; a += 0.1) {
-        //let r = baseRadius + Math.random() * 15 + 10;
-        let r = (Math.random() * this.shakyness + Math.random() * 40) + 80;
+        let r = circleAverageRadius.value + (Math.random() * 5) / 10;
         circle.addPoint({ x: r * Math.cos(a), y: r * Math.sin(a) });
       }
       this.circles.push(circle);
@@ -121,7 +143,7 @@ class ShakingCircle {
   // Additional methods for the class...
   draw() {
     //this.context.strokeStyle = 'hsl(' + this.hue + ', 50%, 50%)';
-    this.context.strokeStyle = this.greyScale;
+    this.context.strokeStyle = borderColor.value;
     this.context.fillStyle = "rgba(255, 255, 255, 0";
     this.context.beginPath();
     this.circles[Math.floor(Math.random() * this.circles.length)].draw(
