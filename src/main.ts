@@ -6,7 +6,7 @@ let settingsPanel: SettingsPanel = new SettingsPanel();
 
 let circleNumber: { value: number } = { value: 23 };
 let circleAverageRadius: { value: number } = { value: 100 };
-let borderColor: { value: string } = { value: "#550000" };
+let borderColor: { value: string } = { value: "#000000" };
 
 let stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
