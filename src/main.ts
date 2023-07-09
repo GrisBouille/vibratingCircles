@@ -110,8 +110,8 @@ class ShakingCircle {
       let circle = new Circle(this.cx, this.cy);
 
       for (let a = 0; a < Math.PI * 2; a += 0.1) {
-        let r = baseRadius + Math.random() * 15 + 10;
-        //let r = (Math.random() * this.shakyness + Math.random() * 40) + 80;
+        //let r = baseRadius + Math.random() * 15 + 10;
+        let r = (Math.random() * this.shakyness + Math.random() * 40) + 80;
         circle.addPoint({ x: r * Math.cos(a), y: r * Math.sin(a) });
       }
       this.circles.push(circle);
@@ -120,7 +120,7 @@ class ShakingCircle {
 
   // Additional methods for the class...
   draw() {
-    //context.strokeStyle = 'hsl(' + this.hue + ', 50%, 50%)';
+    //this.context.strokeStyle = 'hsl(' + this.hue + ', 50%, 50%)';
     this.context.strokeStyle = this.greyScale;
     this.context.fillStyle = "rgba(255, 255, 255, 0";
     this.context.beginPath();
@@ -150,7 +150,7 @@ function resetDrawing() {
   }
 }
 resetDrawing();
-function animate(timestamp) {
+function animate(timestamp: number) {
   stats.begin();
   if (timestamp - lastUpdate >= delay) {
     // If the delay has passed
