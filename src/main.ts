@@ -208,4 +208,4 @@ function animate(timestamp: number) {
   stats.end();
   requestAnimationFrame(animate);
 }
-animate();
+requestAnimationFrame(animate)
