@@ -11,6 +11,10 @@ class SettingsPanel extends HTMLElement {
     // create the panel element
     this.el.id = "settingsPanel";
 
+    let panelTitle = document.createElement('div');
+    panelTitle.className = "settingsTitle"
+    panelTitle.innerHTML = "Settings"
+    this.el.appendChild(panelTitle);
     document.body.appendChild(this.el);
     let panel = this;
     panel.isMouseOverPanel = false;
@@ -31,8 +35,10 @@ class SettingsPanel extends HTMLElement {
         // If the mouse is within 7 pixels of the right edge...
         if (windowWidth - x <= 27 || panel.isMouseOverPanel) {
           panel.el.style.right = "0"; // Slide the control panel in.
+          panel.el.style.paddingLeft = "15px";
         } else {
           panel.el.style.right = "-223px"; // Slide the control panel out.
+          panel.el.style.paddingLeft = "30px";
         }
       });
   }
@@ -60,11 +66,13 @@ class SettingsPanel extends HTMLElement {
     input.addEventListener("input", function () {
       if(typeof linkedValue.value === "number") {
         linkedValue.value = parseFloat(this.value); // Log the current value of the slider.
+      } else if(typeof linkedValue.value === "boolean") {
+        linkedValue.value = this.checked; // Log the current value of the slider.
       } else {
-        linkedValue.value = this.value; // Log the current value of the slider.
+        linkedValue.value = this.value;
       }
         spanValue.textContent = this.value;
-        callback();
+        if (callback !== null) callback();
         // You can use this value to adjust aspects of your animation.
       });
 

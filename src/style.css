@@ -3,11 +3,12 @@
 ********************/
 
 @import url('https://fonts.googleapis.com/css?family=Ubuntu|Barrio|Bubbler+One|Cinzel|Dancing+Script|El+Messiri|Lobster|Montserrat+Subrayada|Montserrat:900|Pacifico');
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
 
 body {
   color: white;
-	font-family: 'Ubuntu', sans-serif;
-	font-size: 12px;
+	font-family: 'Shadows Into Light', cursive;
+	font-size: 16px;
 }
 
 * {
